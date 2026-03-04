@@ -39,7 +39,17 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         rigidBody.linearVelocityX = moveAction.ReadValue<Vector2>().x * speed;
+        if (rigidBody.linearVelocityX < 0)
+        {
+            spriteRenderer.flipX = true;
+        }
+        if (rigidBody.linearVelocityX > 0)
+        {
+            spriteRenderer.flipX = false;
+
+        }
 
         if (rigidBody.linearVelocityY == 0) //check for already falling/jumping
         {
