@@ -16,9 +16,9 @@ public class HurtBox : MonoBehaviour
         
     }
 
-    void OnCollisionEnter2D(Collision2D collision){
+    void OnTriggerEnter2D(Collider2D collision){
         Debug.Log(collision.gameObject.name);
-        if (collision.collider.CompareTag("Attack")){
+        if (collision.CompareTag("Attack")){
             health--;
             Debug.Log("health " + health);
         }

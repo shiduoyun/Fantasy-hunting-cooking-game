@@ -12,8 +12,10 @@ public class AttackController : MonoBehaviour
     BoxCollider2D boxCollider;
 
     Rigidbody2D parentBody;
+    PlayerController controller;
 
-    float attackDuration = PlayerController.attackDuration;
+
+    float attackDuration;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -23,6 +25,8 @@ public class AttackController : MonoBehaviour
         boxCollider = GetComponent<BoxCollider2D>();
         boxCollider.enabled = false;
         parentBody = GetComponentInParent<Rigidbody2D>();
+        controller = GameObject.Find("Player").GetComponent<PlayerController>();
+        attackDuration = controller.attackDuration;
     }
 
     // Update is called once per frame

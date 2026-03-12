@@ -8,7 +8,9 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField]
     float speed = 5.0f;
-    public static float attackDuration = 0.5f;
+    public float attackDuration = 0.5f;
+
+    public int playerHealth;
     Rigidbody2D rigidBody;
     InputAction moveAction;
     InputAction jumpAction;
@@ -33,6 +35,7 @@ public class PlayerController : MonoBehaviour
         jumpAction = InputSystem.actions.FindAction("Jump");
         attackAction = InputSystem.actions.FindAction("Attack");
         spriteRenderer.sprite = idleSprite;
+        playerHealth = 3;
 
         // float height = Camera.main.orthographicSize * 2;
         // float width = height * Camera.main.aspect;
@@ -69,9 +72,15 @@ public class PlayerController : MonoBehaviour
             spriteRenderer.sprite = attackSprite;
             Invoke("resetSprite", attackDuration);
         }
+        
     }
     void resetSprite()
     {
         spriteRenderer.sprite = idleSprite;
+    }
+
+    public int getPlayerHealth()
+    {
+        return playerHealth;
     }
 }
