@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField]
     float speed = 5.0f;
+    public static float attackDuration = 0.5f;
     Rigidbody2D rigidBody;
     InputAction moveAction;
     InputAction jumpAction;
@@ -33,7 +34,11 @@ public class PlayerController : MonoBehaviour
         attackAction = InputSystem.actions.FindAction("Attack");
         spriteRenderer.sprite = idleSprite;
 
+        // float height = Camera.main.orthographicSize * 2;
+        // float width = height * Camera.main.aspect;
 
+        // Debug.Log("Camera Width: " + width);
+        // Debug.Log("Camera Height: " + height);
     }
 
     // Update is called once per frame
@@ -62,7 +67,7 @@ public class PlayerController : MonoBehaviour
         if (attackAction.WasPressedThisFrame())
         {
             spriteRenderer.sprite = attackSprite;
-            Invoke("resetSprite", 2);
+            Invoke("resetSprite", attackDuration);
         }
     }
     void resetSprite()

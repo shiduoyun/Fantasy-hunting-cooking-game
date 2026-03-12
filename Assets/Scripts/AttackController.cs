@@ -13,6 +13,8 @@ public class AttackController : MonoBehaviour
 
     Rigidbody2D parentBody;
 
+    float attackDuration = PlayerController.attackDuration;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -29,7 +31,7 @@ public class AttackController : MonoBehaviour
         if (attackAction.WasPressedThisFrame())
         {
             boxCollider.enabled = true;
-            Invoke("disableCollider", 2);
+            Invoke("disableCollider", attackDuration);
         }
 
         if (parentBody.linearVelocityX < 0)
