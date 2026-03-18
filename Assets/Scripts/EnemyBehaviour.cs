@@ -5,10 +5,10 @@ public class EnemyBehaviour : MonoBehaviour
     BoxCollider2D boxCollider;
     Rigidbody2D parentBody;
 
-    [SerializeField] 
+    [SerializeField]
     float attackDuration = 0.5f;
     [SerializeField]
-    public static int enenmyHealth = 10;
+    public static int enemyHealth = 10;
 
     public bool attackLeft = false;
     public bool attackRight = true;

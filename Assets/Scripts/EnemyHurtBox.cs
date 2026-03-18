@@ -1,45 +1,43 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
 public class EnemyHurtBox : MonoBehaviour
 {
-    // int health;
+    [SerializeField]
+    int health;
+    Boolean hittable;
+
+    [SerializeField]
+    int iFrameDuration;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        // health = 3;
+        hittable = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    // void OnCollisionEnter2D(Collision2D collision){
-    //     Debug.Log(collision.gameObject.name);
-    //     if (collision.collider.CompareTag("Attack")){
-    //         health--;
-    //         Debug.Log("health " + health);
-    //     }
-    // }
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.CompareTag("Attack"))
+        if (collision.collider.CompareTag("Attack") && hittable)
         {
-            EnemyBehaviour.enenmyHealth--;
-        //     if (gameObject.CompareTag("Player"))
-        //     {
-        //         EnemyBehaviour.enenmyHealth--;
-        //     }
-
-        //     if (gameObject.CompareTag("Enemy"))
-        //     {
-        //         PlayerController.playerHealth--;
-                
-        //     }
+            health--;
+            hittable = false;
+            Invoke("removeIFrames", iFrameDuration);
         }
-        Debug.Log("enemyHealth " + EnemyBehaviour.enenmyHealth);
 
+    }
+    //Invincibility frames, or "I-Frames", are the frames where an object cannot be hit.
+    //This is in order to prevent, say, taking damage every frame where it overlaps with a hitbox, instead of just
+    //taking one damage because it was hit once.
+    void removeIframes()
+    {
+        hittable = true;
     }
 }

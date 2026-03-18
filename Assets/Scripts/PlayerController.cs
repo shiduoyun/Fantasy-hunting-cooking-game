@@ -59,7 +59,7 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        if (rigidBody.linearVelocityY == 0) //check for already falling/jumping
+        if (rigidBody.linearVelocityY == 0) //check for already falling/jumping; reprogram later to check if grounded
         {
             if (jumpAction.WasPressedThisFrame())
             {
@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour
             spriteRenderer.sprite = attackSprite;
             Invoke("resetSprite", attackDuration);
         }
-        
+
     }
     void resetSprite()
     {
