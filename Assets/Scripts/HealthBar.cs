@@ -8,13 +8,24 @@ public class HealthBar : MonoBehaviour
 
     void Start()
     {
-        controller = GameObject.Find("Player_Place").GetComponent<PlayerController>();
-        Debug.Log(controller.name);
+        PlayerController[] controllers = FindObjectsByType<PlayerController>(FindObjectsSortMode.None);
+        foreach (PlayerController candidate in controllers)
+        {
+            if (candidate.isActiveAndEnabled)
+            {
+                controller = candidate;
+                break;
+            }
+        }
+
         text = GetComponent<TMP_Text>();
     }
 
     void Update()
     {
-        text.text = "HP: " + controller.getPlayerHealth();
+        if (controller != null)
+        {
+            text.text = "HP: " + controller.getPlayerHealth();
+        }
     }
 }
