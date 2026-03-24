@@ -1,13 +1,12 @@
 
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Animations;
-using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
 public class AttackController : MonoBehaviour
 {
+    [SerializeField]
+    int damage = 1;
+
     InputAction attackAction;
     BoxCollider2D boxCollider;
 
@@ -32,10 +31,11 @@ public class AttackController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (attackAction.WasPressedThisFrame())
+        if (attackAction != null && attackAction.WasPressedThisFrame())
         {
             boxCollider.enabled = true;
-            Invoke("disableCollider", attackDuration);
+            CancelInvoke(nameof(disableCollider));
+            Invoke(nameof(disableCollider), attackDuration);
         }
 
         if (parentBody.linearVelocityX < 0)
@@ -52,5 +52,10 @@ public class AttackController : MonoBehaviour
     void disableCollider()
     {
         boxCollider.enabled = false;
+    }
+
+    public int GetDamage()
+    {
+        return damage;
     }
 }

@@ -1,7 +1,5 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
@@ -9,6 +7,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     float speed = 5.0f;
     public float attackDuration = 0.5f;
+    [SerializeField]
+    int maxHealth = 3;
+    [SerializeField]
+    float damageCooldown = 0.2f;
 
     public int playerHealth;
     Rigidbody2D rigidBody;
@@ -21,6 +23,7 @@ public class PlayerController : MonoBehaviour
     Sprite idleSprite;
     [SerializeField]
     Sprite attackSprite;
+    float nextDamageTime;
 
 
 
@@ -35,7 +38,7 @@ public class PlayerController : MonoBehaviour
         jumpAction = InputSystem.actions.FindAction("Jump");
         attackAction = InputSystem.actions.FindAction("Attack");
         spriteRenderer.sprite = idleSprite;
-        playerHealth = 3;
+        playerHealth = maxHealth;
 
         // float height = Camera.main.orthographicSize * 2;
         // float width = height * Camera.main.aspect;
@@ -67,10 +70,11 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (attackAction.WasPressedThisFrame())
+        if (attackAction != null && attackAction.WasPressedThisFrame())
         {
             spriteRenderer.sprite = attackSprite;
-            Invoke("resetSprite", attackDuration);
+            CancelInvoke(nameof(resetSprite));
+            Invoke(nameof(resetSprite), attackDuration);
         }
 
     }
@@ -82,5 +86,17 @@ public class PlayerController : MonoBehaviour
     public int getPlayerHealth()
     {
         return playerHealth;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        if (Time.time < nextDamageTime)
+        {
+            return;
+        }
+
+        playerHealth = Mathf.Max(0, playerHealth - damage);
+        nextDamageTime = Time.time + damageCooldown;
+        Debug.Log("playerHealth " + playerHealth);
     }
 }

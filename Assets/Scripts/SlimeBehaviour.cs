@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class SlimeBehaviour : MonoBehaviour
@@ -10,15 +9,24 @@ public class SlimeBehaviour : MonoBehaviour
     Boolean jumping;
 
     [SerializeField]
-    public int health = 5;
-
-
-
+    int health = 5;
+    [SerializeField]
+    int contactDamage = 1;
+    [SerializeField]
+    float attackCooldown = 0.5f;
+    [SerializeField]
+    float hitCooldown = 0.1f;
+    float nextAttackTime;
+    float nextHitTime;
 
     void Start()
     {
         boxCollider = GetComponent<BoxCollider2D>();
-        rigidBody = GetComponentInParent<Rigidbody2D>();
+        rigidBody = GetComponent<Rigidbody2D>();
+        if (rigidBody == null)
+        {
+            rigidBody = GetComponentInParent<Rigidbody2D>();
+        }
         jumping = true;
 
     }
@@ -27,7 +35,7 @@ public class SlimeBehaviour : MonoBehaviour
     {
         if (jumping == false)
         {
-            Invoke("SlimeJump", UnityEngine.Random.Range(0.5f, 0.5f));
+            Invoke("SlimeJump", UnityEngine.Random.Range(0.5f, 1.0f));
 
             jumping = true;
         }
@@ -61,6 +69,9 @@ public class SlimeBehaviour : MonoBehaviour
         {
             Invoke("ResetJump", 1f);
         }
+
+        TryTakeDamage(collision.collider);
+        TryDamagePlayer(collision.collider);
     }
 
     void OnCollisionExit2D(Collision2D collision)
@@ -71,8 +82,57 @@ public class SlimeBehaviour : MonoBehaviour
         }
     }
 
+    void OnCollisionStay2D(Collision2D collision)
+    {
+        TryDamagePlayer(collision.collider);
+    }
+
     void ResetJump()
     {
         jumping = false;
+    }
+
+    void TryTakeDamage(Collider2D collider)
+    {
+        if (Time.time < nextHitTime)
+        {
+            return;
+        }
+
+        AttackController attackController = collider.GetComponent<AttackController>();
+        if (attackController == null)
+        {
+            return;
+        }
+
+        nextHitTime = Time.time + hitCooldown;
+        health = Mathf.Max(0, health - attackController.GetDamage());
+
+        if (health == 0)
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
+    void TryDamagePlayer(Collider2D collider)
+    {
+        if (Time.time < nextAttackTime)
+        {
+            return;
+        }
+
+        PlayerController playerController = collider.GetComponent<PlayerController>();
+        if (playerController == null)
+        {
+            playerController = collider.GetComponentInParent<PlayerController>();
+        }
+
+        if (playerController == null)
+        {
+            return;
+        }
+
+        nextAttackTime = Time.time + attackCooldown;
+        playerController.TakeDamage(contactDamage);
     }
 }
