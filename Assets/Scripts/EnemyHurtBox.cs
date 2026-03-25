@@ -23,9 +23,9 @@ public class EnemyHurtBox : MonoBehaviour
 
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(UnityEngine.Collider2D collision)
     {
-        if (collision.collider.CompareTag("Attack") && hittable)
+        if (collision.CompareTag("Attack") && hittable)
         {
             health--;
             hittable = false;

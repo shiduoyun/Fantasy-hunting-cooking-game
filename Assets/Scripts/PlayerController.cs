@@ -97,6 +97,6 @@ public class PlayerController : MonoBehaviour
 
         playerHealth = Mathf.Max(0, playerHealth - damage);
         nextDamageTime = Time.time + damageCooldown;
-        Debug.Log("playerHealth " + playerHealth);
+
     }
 }

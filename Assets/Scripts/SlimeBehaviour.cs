@@ -68,10 +68,16 @@ public class SlimeBehaviour : MonoBehaviour
         if (collision.collider.CompareTag("Ground") && rigidBody.linearVelocityY == 0)
         {
             Invoke("ResetJump", 1f);
-        }
 
-        TryTakeDamage(collision.collider);
+        }
         TryDamagePlayer(collision.collider);
+
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        TryTakeDamage(collision);
+
     }
 
     void OnCollisionExit2D(Collision2D collision)
@@ -112,6 +118,7 @@ public class SlimeBehaviour : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
+
     }
 
     void TryDamagePlayer(Collider2D collider)

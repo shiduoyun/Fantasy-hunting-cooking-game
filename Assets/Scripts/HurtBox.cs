@@ -13,14 +13,15 @@ public class HurtBox : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    void OnTriggerEnter2D(Collider2D collision){
-        Debug.Log(collision.gameObject.name);
-        if (collision.CompareTag("Attack")){
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Attack"))
+        {
             health--;
-            Debug.Log("health " + health);
+
         }
     }
 }
